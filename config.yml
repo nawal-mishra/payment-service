@@ -1,0 +1,100 @@
+## Dropwizard has built-in functionality to externalize application configuration. 
+appName: payment-service!
+
+## Environment (dev, test, prod)
+env: dev
+
+# User
+#login: Nawal
+# Password
+#password: password
+
+#Server Connectors
+server:
+  applicationConnectors:
+    - type: http
+      port: 9000
+  adminConnectors:
+  - type: http
+    port: 9001
+      
+
+database:
+  # the name of your JDBC driver
+  driverClass: com.mysql.jdbc.Driver
+
+  # the username
+  user: gwportal
+
+  # the password
+  password: gwportal
+
+  # the JDBC URL
+  url: jdbc:mysql://10.14.23.41:3306/games24x7v4
+
+  # any properties specific to your JDBC driver:
+  properties:
+    charSet: UTF-8
+
+  # the maximum amount of time to wait on an empty pool before throwing an exception
+  maxWaitForConnection: 1s
+
+  # the SQL query to run when validating a connection's liveness
+  validationQuery: "/* MyService Health Check */ SELECT 1;"
+
+  # the minimum number of connections to keep open
+  minSize: 8
+
+  # the maximum number of connections to keep open
+  maxSize: 32
+
+  # whether or not idle connections should be validated
+  checkConnectionWhileIdle: false
+  checkConnectionOnConnect: true
+  checkConnectionOnReturn: true
+  checkConnectionOnBorrow: true
+
+  # the amount of time to sleep between runs of the idle connection validation, abandoned cleaner and idle pool resizing
+  evictionInterval: 10s
+
+  # the minimum amount of time an connection must sit idle in the pool before it is eligible for eviction
+  minIdleTime: 1 minute
+  
+    
+logging:
+  # The default level of all loggers. Can be OFF, ERROR, WARN, INFO, DEBUG, TRACE, or ALL.
+  level: DEBUG
+  
+  # Logger-specific levels.
+  loggers:
+
+    # Sets the level for 'com.example.app' to DEBUG.
+    com.games24x7: DEBUG
+  appenders:
+    - type: file
+      threshold: DEBUG
+      # The file to which current statements will be logged.
+      currentLogFilename: ./logs/paymentservice.log
+#
+#      # When the log file rotates, the archived log will be renamed to this and gzipped. The
+#      # %d is replaced with the previous day (yyyy-MM-dd). Custom rolling windows can be created
+#      # by passing a SimpleDateFormat-compatible format as an argument: "%d{yyyy-MM-dd-hh}".
+      archivedLogFilenamePattern: ./logs/paymentservice-%d-%i.log.gz
+
+      # The number of archived files to keep.
+      archivedFileCount: 30
+
+      # The timezone used to format dates. HINT: USE THE DEFAULT, UTC.
+      timeZone: IST
+      maxFileSize: 10MB
+      
+      
+#Jersey client settings    
+jerseyClient:
+  minThreads: 1
+  maxThreads: 10
+  workQueueSize: 8
+  timeout: 15000ms
+  gzipEnabled: true
+  gzipEnabledForRequests: true
+  chunkedEncodingEnabled: true
